@@ -29,8 +29,8 @@ function pickSentence() {
   const s = sentences[Math.floor(Math.random() * sentences.length)];
   target = s.romaji;
   sentenceEl.textContent = s.jp;
-  romajiEl.textContent = s.romaji;
   totalCountEl.textContent = target.length;
+  renderHighlight('');
 }
 
 function updateTimer() {
@@ -41,9 +41,27 @@ function updateTimer() {
   timerEl.textContent = `${min}:${secStr}`;
 }
 
+function renderHighlight(input) {
+  let html = '';
+  for (let i = 0; i < target.length; i++) {
+    const ch = target[i];
+    if (i < input.length) {
+      if (input[i] === ch) {
+        html += `<span class="correct">${ch}</span>`;
+      } else {
+        html += `<span class="incorrect">${ch}</span>`;
+      }
+    } else {
+      html += `<span>${ch}</span>`;
+    }
+  }
+  romajiEl.innerHTML = html;
+}
+
 function playBeep() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const osc = ctx.createOscillator();
+  osc.frequency.value = 440;
   osc.connect(ctx.destination);
   osc.start();
   osc.stop(ctx.currentTime + 0.1);
@@ -73,25 +91,31 @@ function reset() {
   pickSentence();
   typedCountEl.textContent = '0';
   timerEl.textContent = '00:00';
-  startTime = Date.now();
+  startTime = null;
   clearInterval(timerInterval);
-  timerInterval = setInterval(updateTimer, 1000);
+  timerInterval = null;
   inputEl.focus();
 }
 
-inputEl.addEventListener('input', () => {
+inputEl.addEventListener('input', (e) => {
   if (startTime === null) {
     startTime = Date.now();
     timerInterval = setInterval(updateTimer, 1000);
   }
   const val = inputEl.value;
-  if (val[current] === target[current]) {
-    correct++;
-  } else {
-    playBeep();
+  const lastIndex = val.length - 1;
+  if (e.inputType && !e.inputType.startsWith('delete')) {
+    if (val[lastIndex] !== target[lastIndex]) {
+      playBeep();
+    }
   }
   current = val.length;
+  correct = 0;
+  for (let i = 0; i < current; i++) {
+    if (val[i] === target[i]) correct++;
+  }
   typedCountEl.textContent = current;
+  renderHighlight(val);
   if (current >= target.length) {
     finish();
   }
