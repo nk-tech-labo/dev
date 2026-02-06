@@ -1,0 +1,26 @@
+{
+  "contracts": {
+    "C-10001": {
+      "contract_name": "田中 太郎",
+      "onu_router_name": "ONU-AX1800",
+      "lamp_status": {
+        "power": "on",
+        "optical": "blink",
+        "internet": "off",
+        "alarm": "off"
+      },
+      "shipping_address": "東京都港区芝公園1-1-1"
+    },
+    "C-10002": {
+      "contract_name": "佐藤 花子",
+      "onu_router_name": "ONU-BX2400",
+      "lamp_status": {
+        "power": "on",
+        "optical": "on",
+        "internet": "on",
+        "alarm": "off"
+      },
+      "shipping_address": "大阪府大阪市北区梅田2-2-2"
+    }
+  }
+}
