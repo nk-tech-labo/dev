@@ -22,3 +22,7 @@ export NEWS_API_KEY=あなたのNewsAPIキー
 export SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
 python fetch_ai_news.py
 ```
+
+## MCP サーバー (AI-IVR ↔ ServiceNow)
+
+Foundry で MCP サーバーを構築し、閉域環境で検証するための手順と参考実装を `mcp_server/README.md` にまとめました。
